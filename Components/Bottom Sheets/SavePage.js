@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -14,6 +14,9 @@ import {
   BaseText,
   HeaderText,
 } from "../Typography";
+import Navbar from "../Navbar";
+import { useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const words = Array(2).fill({
   word: "Meticulous",
@@ -21,14 +24,34 @@ const words = Array(2).fill({
 });
 
 export default function ReviewScreen({ onClose }) {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const [currentTab, setCurrentTab] = useState("Saved");
+
+  function openScreen(screenName) {
+    if (screenName === "Home") {
+      setCurrentTab("Home");
+      return;
+    }
+
+    setCurrentTab(screenName);
+
+    if (screenName === "Saved") {
+      navigation.navigate("SavedPage");
+      return;
+    }
+
+    navigation.navigate("ProfilePage");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         {/* Close */}
         <View style={styles.closeButtonWrap}>
-          <TouchableOpacity onPress={onClose}>
-            <FontAwesome6 name="xmark" size={40} color="#111" />
-          </TouchableOpacity>
+          <Pressable onPress={() => navigation.goBack()}>
+            <FontAwesome6 name="arrow-left" size={34} color="#111" />
+          </Pressable>
         </View>
 
         {/* Title */}
@@ -63,7 +86,7 @@ export default function ReviewScreen({ onClose }) {
 
 function WordCard({ word, meaning }) {
   return (
-    <TouchableOpacity>
+    <Pressable>
       <View style={styles.card}>
         <View style={{ gap: 8 }}>
           <HeaderText style={styles.word}>{word}</HeaderText>
@@ -71,7 +94,7 @@ function WordCard({ word, meaning }) {
         </View>
         <FontAwesome6 name="angle-right" size={20} color="#111" />
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

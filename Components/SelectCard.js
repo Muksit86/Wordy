@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, Pressable, StyleSheet, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 
 import { BaseText, HeaderText } from "./Typography";
@@ -35,7 +29,7 @@ export default function SelectCard({
 
   return (
     <>
-      <TouchableOpacity
+      <Pressable
         activeOpacity={0.8}
         style={[styles.card, style]}
         onPress={() => setVisible(true)}
@@ -43,7 +37,7 @@ export default function SelectCard({
         <BaseText>{value || placeholder}</BaseText>
 
         <FontAwesome6 name="angle-down" size={28} color={COLORS.black} />
-      </TouchableOpacity>
+      </Pressable>
 
       <Modal transparent animationType="fade" visible={visible}>
         <Pressable style={styles.overlay} onPress={() => setVisible(false)}>
@@ -51,7 +45,7 @@ export default function SelectCard({
             <HeaderText style={styles.title}>Select an option</HeaderText>
 
             {options.map((item) => (
-              <TouchableOpacity
+              <Pressable
                 key={item}
                 style={[styles.option, value === item && styles.selected]}
                 onPress={() => handleSelect(item)}
@@ -61,7 +55,7 @@ export default function SelectCard({
                 {value === item && (
                   <FontAwesome6 name="check" size={18} color={COLORS.black} />
                 )}
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </Pressable>
         </Pressable>

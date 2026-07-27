@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 
 import { HeaderText } from "../Components/Typography";
@@ -16,7 +16,7 @@ export default function PrimaryButton({
   disabled = false,
 }) {
   return (
-    <TouchableOpacity
+    <Pressable
       activeOpacity={0.8}
       disabled={disabled}
       onPress={onPress}
@@ -32,7 +32,7 @@ export default function PrimaryButton({
       </HeaderText>
 
       {icon ? <FontAwesome6 name={icon} size={22} color={color} /> : null}
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

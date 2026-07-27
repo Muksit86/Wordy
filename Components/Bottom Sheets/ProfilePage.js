@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -14,14 +14,34 @@ import {
   BaseText,
   HeaderText,
 } from "../Typography";
-
+import { useAuth } from "../../Context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 import Avatar from "../Avatar";
+import Navbar from "../Navbar";
+import { useRoute } from "@react-navigation/native";
 
 const selectedColor = "#8FB1F6";
 
 export default function ProfileScreen({ onClose }) {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { user } = useAuth();
+
+  function openScreen(screenName) {
+    if (screenName === "Home") {
+      setCurrentTab("Home");
+      return;
+    }
+
+    setCurrentTab(screenName);
+
+    if (screenName === "Saved") {
+      navigation.navigate("SavedPage");
+      return;
+    }
+
+    navigation.navigate("ProfilePage");
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,20 +51,22 @@ export default function ProfileScreen({ onClose }) {
       >
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={onClose}>
-            <FontAwesome6 name="xmark" size={34} color="#111" />
-          </TouchableOpacity>
+          <Pressable onPress={() => navigation.goBack()}>
+            <FontAwesome6 name="arrow-left" size={34} color="#111" />
+          </Pressable>
 
-          <TouchableOpacity>
+          <Pressable>
             <FontAwesome6 name="gear" size={34} color="#111" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Avatar */}
         <Avatar color={selectedColor} mood="angry" size={200} />
 
         {/* Name */}
-        <DisplayText style={[styles.name]}>Abdul Muksit</DisplayText>
+        <DisplayText style={[styles.name]}>
+          {user?.displayName ?? "Learner"}
+        </DisplayText>
         <BaseText style={[styles.subtitle]}>Learning since July 2026</BaseText>
 
         {/* Stats */}
@@ -58,10 +80,10 @@ export default function ProfileScreen({ onClose }) {
         <View style={styles.category}>
           <BaseText>Premium</BaseText>
 
-          <TouchableOpacity style={styles.premiumButton}>
+          <Pressable style={styles.premiumButton}>
             <SubHeaderText style={{ color: "white" }}>Go Premium</SubHeaderText>
             <FontAwesome6 name="arrow-right" size={20} color="white" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Overview */}

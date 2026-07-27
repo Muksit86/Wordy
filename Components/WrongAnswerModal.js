@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 
 import PrimaryButton from "../Constant/PrimaryButton";
@@ -30,9 +30,9 @@ export default function WrongAnswerModal({
           <View style={styles.header}>
             <HeaderText>Wrong answer</HeaderText>
 
-            <TouchableOpacity onPress={onClose}>
+            <Pressable onPress={onClose}>
               <FontAwesome6 name="xmark" size={28} color={COLORS.black} />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <DisplayText>{word}</DisplayText>

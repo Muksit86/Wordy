@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TextInput, Pressable, View } from "react-native";
 
 const COLORS = {
   white: "hsl(0, 0%, 100%)",
@@ -49,13 +49,13 @@ export default function InputCard({
       />
 
       {rightIcon && (
-        <TouchableOpacity
+        <Pressable
           activeOpacity={0.7}
           onPress={handleRightPress}
           style={styles.rightIcon}
         >
           {rightIcon}
-        </TouchableOpacity>
+        </Pressable>
       )}
     </View>
   );

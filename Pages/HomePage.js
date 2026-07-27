@@ -1,15 +1,17 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
+  Pressable,
   View,
 } from "react-native";
+
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import BottomSheet from "@gorhom/bottom-sheet";
-
+import { useAuth } from "../Context/AuthContext";
+import { useRoute } from "@react-navigation/native";
 import {
   DisplayText,
   SubHeaderText,
@@ -17,21 +19,28 @@ import {
   HeaderText,
 } from "../Components/Typography";
 import PrimaryButton from "../Constant/PrimaryButton";
-import SavePage from "../Components/Bottom Sheets/SavePage";
-import ProfilePage from "../Components/Bottom Sheets/ProfilePage";
 import Navbar from "../Components/Navbar";
 
 export default function HomeScreen() {
+  const { user } = useAuth();
+  const route = useRoute();
   const navigation = useNavigation();
   const [currentTab, setCurrentTab] = useState("Home");
-  const [activeSheet, setActiveSheet] = useState(null);
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["88%"], []);
 
-  function closeSheet() {
-    bottomSheetRef.current?.close();
-    setActiveSheet(null);
-    setCurrentTab("Home");
+  function openScreen(screenName) {
+    if (screenName === "Home") {
+      setCurrentTab("Home");
+      return;
+    }
+
+    setCurrentTab(screenName);
+
+    if (screenName === "Saved") {
+      navigation.navigate("SavedPage");
+      return;
+    }
+
+    navigation.navigate("ProfilePage");
   }
 
   return (
@@ -40,7 +49,7 @@ export default function HomeScreen() {
         <View style={{ paddingHorizontal: 20, gap: 32 }}>
           <View style={styles.header}>
             <DisplayText style={styles.displayeText}>
-              Welcome back Muksit
+              Welcome back {user?.displayName ?? "Learner"}
             </DisplayText>
 
             <View style={styles.streak}>
@@ -61,7 +70,7 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <TouchableOpacity
+          <Pressable
             activeOpacity={0.8}
             style={styles.wordCard}
             onPress={() => navigation.navigate("LearnWord", { wordIndex: 0 })}
@@ -72,12 +81,12 @@ export default function HomeScreen() {
               <HeaderText>Meticulous</HeaderText>
               <BaseText>Tap to learn the meaning</BaseText>
             </View>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity
+          <Pressable
             activeOpacity={0.8}
             style={[styles.wordCard, { backgroundColor: "hsl(221, 47%, 48%)" }]}
-            onPress={() => navigation.navigate("Onboarding", { stepIndex: 0 })}
+            onPress={() => navigation.navigate("LearnWord", { wordIndex: 0 })}
           >
             <BaseText style={{ color: "white" }}>Today's lesson</BaseText>
 
@@ -91,7 +100,7 @@ export default function HomeScreen() {
               </HeaderText>
               <BaseText style={{ color: "white" }}>5 words</BaseText>
             </View>
-          </TouchableOpacity>
+          </Pressable>
 
           <View style={styles.reviewCard}>
             <View style={styles.reviewHeader}>
@@ -115,37 +124,6 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
-
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        onClose={() => {
-          setActiveSheet(null);
-          setCurrentTab("Home");
-        }}
-      >
-        {activeSheet === "Saved" ? <SavePage onClose={closeSheet} /> : null}
-        {activeSheet === "Profile" ? <ProfilePage onClose={closeSheet} /> : null}
-      </BottomSheet>
-
-      <Navbar
-        currentTab={currentTab}
-        onHomePress={() => {
-          closeSheet();
-        }}
-        onSavedPress={() => {
-          setCurrentTab("Saved");
-          setActiveSheet("Saved");
-          bottomSheetRef.current?.expand();
-        }}
-        onProfilePress={() => {
-          setCurrentTab("Profile");
-          setActiveSheet("Profile");
-          bottomSheetRef.current?.expand();
-        }}
-      />
     </SafeAreaView>
   );
 }

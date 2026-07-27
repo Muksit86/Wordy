@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -14,6 +14,13 @@ import InputCard from "../../Components/InputCard";
 import PrimaryButton from "../../Constant/PrimaryButton";
 
 import { DisplayText, BaseText } from "../../Components/Typography";
+
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserProfile } from "../../Service/firestore";
+
+import { auth } from "../../Firebase/config";
+
+import { useNavigation } from "@react-navigation/native";
 
 const COLORS = {
   white: "hsl(0, 0%, 100%)",
@@ -28,6 +35,93 @@ export default function SignupScreen() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+
+  const validate = () => {
+    if (!username.trim()) {
+      alert("Please enter a username.");
+      return false;
+    }
+
+    if (!email.trim()) {
+      alert("Please enter your email.");
+      return false;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSignup = async () => {
+    // Prevent multiple requests
+    if (loading) return;
+
+    // Basic validation
+    if (!username.trim()) {
+      alert("Please enter a username.");
+      return;
+    }
+
+    if (!email.trim()) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Create Firebase account
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password,
+      );
+
+      // Save the username as the user's display name
+      await updateProfile(userCredential.user, {
+        displayName: username.trim(),
+      });
+
+      alert("Account created successfully!");
+
+      await createUserProfile({
+        ...userCredential.user,
+        displayName: username.trim(),
+      });
+
+      // TODO:
+      // navigation.replace("Home");
+    } catch (error) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          alert("This email is already in use.");
+          break;
+
+        case "auth/invalid-email":
+          alert("Please enter a valid email.");
+          break;
+
+        case "auth/weak-password":
+          alert("Password must be at least 6 characters.");
+          break;
+
+        default:
+          alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,25 +164,29 @@ export default function SignupScreen() {
           />
         </View>
 
-        <PrimaryButton title="Create Account" onPress={() => {}} />
+        <PrimaryButton
+          title={loading ? "Creating..." : "Create Account"}
+          disabled={loading}
+          onPress={handleSignup}
+        />
 
         <BaseText style={styles.or}>or continue with</BaseText>
 
         <View style={styles.socials}>
-          <TouchableOpacity style={styles.socialButton}>
+          <Pressable style={styles.socialButton}>
             <MaterialCommunityIcons name="google" size={44} color="#EA4335" />
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity style={styles.socialButton}>
+          <Pressable style={styles.socialButton}>
             <FontAwesome6 name="facebook-f" size={42} color="#4267B2" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
-        <TouchableOpacity>
+        <Pressable onPress={() => navigation.navigate("Login")}>
           <BaseText style={styles.bottomText}>
             I already have an account
           </BaseText>
-        </TouchableOpacity>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );

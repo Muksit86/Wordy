@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-
+import { useApp } from "../../Context/AppContext";
 import Avatar from "../../Components/Avatar";
 import PrimaryButton from "../../Constant/PrimaryButton";
 
@@ -25,6 +25,11 @@ const WORD_OPTIONS = [
 
 export default function FinalOnboardingScreen() {
   const [goal, setGoal] = useState(WORD_OPTIONS[0]);
+  const { finishOnboarding } = useApp();
+
+  const handleGetStarted = async () => {
+    await finishOnboarding();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,7 +59,7 @@ export default function FinalOnboardingScreen() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <PrimaryButton title="Complete" onPress={() => {}} />
+          <PrimaryButton title="Complete" onPress={handleGetStarted} />
         </View>
       </View>
     </SafeAreaView>

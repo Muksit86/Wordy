@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -74,9 +74,9 @@ export default function LearnWordScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => navigation.goBack()}>
             <FontAwesome6 name="angle-left" size={32} color={COLORS.black} />
-          </TouchableOpacity>
+          </Pressable>
 
           <BaseText style={styles.progressText}>
             {wordIndex + 1}/{words.length} word
@@ -95,9 +95,9 @@ export default function LearnWordScreen() {
               {currentWord.pronunciation}
             </BaseText>
 
-            <TouchableOpacity style={styles.audioButton}>
+            <Pressable style={styles.audioButton}>
               <FontAwesome6 name="volume-high" size={20} color={COLORS.white} />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 

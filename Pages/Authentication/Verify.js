@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -81,13 +81,13 @@ export default function VerifyIdentityScreen({ route }) {
             />
           </View>
         ) : (
-          <TouchableOpacity style={styles.providerButton}>
+          <Pressable style={styles.providerButton}>
             {provider === "google" ? (
               <MaterialCommunityIcons name="google" size={48} color="#EA4335" />
             ) : (
               <FontAwesome6 name="facebook-f" size={44} color="#4267B2" />
             )}
-          </TouchableOpacity>
+          </Pressable>
         )}
 
         <PrimaryButton title="Verify" onPress={() => {}} />

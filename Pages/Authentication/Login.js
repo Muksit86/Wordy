@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -14,6 +14,11 @@ import InputCard from "../../Components/InputCard";
 import PrimaryButton from "../../Constant/PrimaryButton";
 
 import { DisplayText, BaseText } from "../../Components/Typography";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../Firebase/config";
+
+import { useNavigation } from "@react-navigation/native";
 
 const COLORS = {
   white: "hsl(0, 0%, 100%)",
@@ -27,6 +32,56 @@ const COLORS = {
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+
+  const handleLogin = async () => {
+    if (loading) return;
+
+    if (!email.trim()) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    if (!password) {
+      alert("Please enter your password.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await signInWithEmailAndPassword(
+        auth,
+        email.trim().toLowerCase(),
+        password,
+      );
+
+      alert("Welcome back!");
+
+      // navigation.replace("Home");
+    } catch (error) {
+      switch (error.code) {
+        case "auth/invalid-credential":
+          alert("Incorrect email or password.");
+          break;
+
+        case "auth/invalid-email":
+          alert("Please enter a valid email.");
+          break;
+
+        case "auth/user-disabled":
+          alert("This account has been disabled.");
+          break;
+
+        default:
+          alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+      setPassword("");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,23 +120,27 @@ export default function LoginScreen() {
           />
         </View>
 
-        <PrimaryButton title="Login" onPress={() => {}} />
+        <PrimaryButton
+          title={loading ? "Signing In..." : "Login"}
+          onPress={handleLogin}
+          disabled={loading}
+        />
 
         <BaseText style={styles.or}>or continue with</BaseText>
 
         <View style={styles.socials}>
-          <TouchableOpacity style={styles.socialButton}>
+          <Pressable style={styles.socialButton}>
             <MaterialCommunityIcons name="google" size={42} color="#EA4335" />
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity style={styles.socialButton}>
+          <Pressable style={styles.socialButton}>
             <FontAwesome6 name="facebook-f" size={42} color="#4267B2" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
-        <TouchableOpacity>
+        <Pressable onPress={() => navigation.navigate("Signup")}>
           <BaseText style={styles.signup}>I don’t have an account</BaseText>
-        </TouchableOpacity>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );

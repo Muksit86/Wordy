@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -70,9 +70,9 @@ export default function QuestionScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => navigation.goBack()}>
             <FontAwesome6 name="angle-left" size={32} color={COLORS.black} />
-          </TouchableOpacity>
+          </Pressable>
 
           <BaseText style={styles.questionCount}>
             {questionIndex + 1}/{questions.length} question
@@ -90,7 +90,7 @@ export default function QuestionScreen() {
             const isSelected = selectedOption === option;
 
             return (
-              <TouchableOpacity
+              <Pressable
                 key={option}
                 activeOpacity={0.8}
                 onPress={() => setSelectedOption(option)}
@@ -113,7 +113,7 @@ export default function QuestionScreen() {
                 </View>
 
                 <HeaderText style={styles.answerText}>{option}</HeaderText>
-              </TouchableOpacity>
+              </Pressable>
             );
           })}
         </View>

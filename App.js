@@ -14,6 +14,11 @@ import HomePage from "./Pages/HomePage";
 import Onboaring from "./Pages/Onboading/Onboaring";
 import LearnWord from "./Pages/Learning/LearnWord";
 import WordQuestion from "./Pages/Learning/WordQuestion";
+import SavePage from "./Components/Bottom Sheets/SavePage";
+import ProfilePage from "./Components/Bottom Sheets/ProfilePage";
+import { AppProvider } from "./Context/AppContext";
+import { AuthProvider } from "./Context/AuthContext";
+import RootNavigator from "./Navigation/RootNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,18 +32,14 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomePage} />
-
-          <Stack.Screen name="Onboarding" component={Onboaring} />
-
-          <Stack.Screen name="LearnWord" component={LearnWord} />
-
-          <Stack.Screen name="Question" component={WordQuestion} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <AuthProvider>
+      <AppProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </AppProvider>
+    </AuthProvider>
   );
 }

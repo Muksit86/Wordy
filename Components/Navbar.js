@@ -1,51 +1,45 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 
-const tabs = [
-  { name: "Home", icon: "house" },
-  { name: "Saved", icon: "bookmark" },
-  { name: "Profile", icon: "user" },
-];
+const icons = {
+  HomeTab: "house",
+  Saved: "bookmark",
+  Profile: "user",
+};
 
-export default function Navbar({
-  currentTab,
-  onHomePress,
-  onSavedPress,
-  onProfilePress,
-}) {
+export default function Navbar({ state, navigation }) {
   return (
     <View style={styles.bottomWrapper}>
       <View style={styles.bottomBar}>
-        {tabs.map((tab) => {
-          const isFocused = currentTab === tab.name;
+        {state.routes.map((route, index) => {
+          const isFocused = state.index === index;
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
 
           return (
-            <TouchableOpacity
-              key={tab.name}
+            <Pressable
+              key={route.key}
               style={[styles.tabButton, isFocused && styles.activeTab]}
-              onPress={() => {
-                switch (tab.name) {
-                  case "Home":
-                    onHomePress?.();
-                    break;
-
-                  case "Saved":
-                    onSavedPress?.();
-                    break;
-
-                  case "Profile":
-                    onProfilePress?.();
-                    break;
-                }
-              }}
+              onPress={onPress}
+              accessibilityRole="button"
             >
               <FontAwesome6
-                name={tab.icon}
+                name={icons[route.name]}
                 size={20}
                 color={isFocused ? "white" : "#111"}
               />
-            </TouchableOpacity>
+            </Pressable>
           );
         })}
       </View>
@@ -60,6 +54,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: "center",
+    zIndex: 10,
   },
 
   bottomBar: {

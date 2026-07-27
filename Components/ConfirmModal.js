@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Pressable, View } from "react-native";
 
 import Avatar from "./Avatar";
 import PrimaryButton from "../Constant/PrimaryButton";
@@ -38,9 +38,9 @@ export default function ConfirmationModal({
               style={styles.confirm}
             />
 
-            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+            <Pressable style={styles.cancelButton} onPress={onCancel}>
               <HeaderText>{cancelText}</HeaderText>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>

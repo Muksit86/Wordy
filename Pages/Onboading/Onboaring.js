@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { DisplayText, HeaderText } from "../../Components/Typography";
 import PrimaryButton from "../../Constant/PrimaryButton";
 import { COLORS } from "../../Constant/Colors";
+import { useApp } from "../../Context/AppContext";
 
 const onboardingSteps = [
   {
@@ -38,13 +39,17 @@ export default function OnboardingScreen() {
   const isLastStep = stepIndex === onboardingSteps.length - 1;
   const progress = `${((stepIndex + 1) / onboardingSteps.length) * 100}%`;
 
-  function handleSelect() {
+  const { finishOnboarding } = useApp();
+
+  async function handleSelect() {
     if (isLastStep) {
-      navigation.navigate("LearnWord", { wordIndex: 0 });
+      await finishOnboarding();
       return;
     }
 
-    navigation.push("Onboarding", { stepIndex: stepIndex + 1 });
+    navigation.push("Onboarding", {
+      stepIndex: stepIndex + 1,
+    });
   }
 
   return (
