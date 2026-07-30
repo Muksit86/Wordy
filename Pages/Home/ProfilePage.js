@@ -1,23 +1,17 @@
 import React from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Text, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import {
   DisplayText,
   SubHeaderText,
   BaseText,
   HeaderText,
-} from "../Typography";
+} from "../../Components/Typography";
 import { useAuth } from "../../Context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
-import Avatar from "../Avatar";
-import Navbar from "../Navbar";
+import Avatar from "../../Components/Avatar";
+import Navbar from "../../Components/Navbar";
 import { useRoute } from "@react-navigation/native";
 
 const selectedColor = "#8FB1F6";
@@ -61,13 +55,19 @@ export default function ProfileScreen({ onClose }) {
         </View>
 
         {/* Avatar */}
-        <Avatar color={selectedColor} mood="angry" size={200} />
+        <View style={styles.avatar}>
+          <Avatar color={selectedColor} mood="angry" size={200} />
+        </View>
 
         {/* Name */}
-        <DisplayText style={[styles.name]}>
-          {user?.displayName ?? "Learner"}
-        </DisplayText>
-        <BaseText style={[styles.subtitle]}>Learning since July 2026</BaseText>
+        <View style={{ gap: 8 }}>
+          <DisplayText style={[styles.name]}>
+            {user?.displayName ?? "Learner"}
+          </DisplayText>
+          <BaseText style={[styles.subtitle]}>
+            Learning since July 2026
+          </BaseText>
+        </View>
 
         {/* Stats */}
         <View style={styles.stats}>
@@ -137,11 +137,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFE7B8",
-    paddingBottom: 40,
   },
 
   content: {
-    marginTop: 30,
     paddingHorizontal: 28,
     paddingTop: 25,
     gap: 32,
@@ -155,14 +153,8 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 260,
-    height: 140,
-    borderRadius: 24,
-    backgroundColor: "#8FB1F6",
+    flex: 1,
     alignSelf: "center",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
   },
 
   eye: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, StyleSheet, Pressable, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 
 const icons = {
@@ -50,7 +50,7 @@ export default function Navbar({ state, navigation }) {
 const styles = StyleSheet.create({
   bottomWrapper: {
     position: "absolute",
-    bottom: 18,
+    bottom: 0,
     left: 0,
     right: 0,
     alignItems: "center",
@@ -58,12 +58,12 @@ const styles = StyleSheet.create({
   },
 
   bottomBar: {
-    borderWidth: 3,
+    borderTopWidth: 3,
     borderColor: "black",
-    width: "88%",
+    width: "100%",
     backgroundColor: "white",
-    borderRadius: 99,
-    paddingHorizontal: 14,
+    borderRadius: 0,
+    paddingHorizontal: 0,
     paddingVertical: 10,
     flexDirection: "row",
     justifyContent: "space-around",

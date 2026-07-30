@@ -1,20 +1,14 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Text, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import {
   DisplayText,
   SubHeaderText,
   BaseText,
   HeaderText,
-} from "../Typography";
-import Navbar from "../Navbar";
+} from "../../Components/Typography";
+import Navbar from "../../Components/Navbar";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -107,7 +101,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 10,
     paddingBottom: 24,
     gap: 40,
   },

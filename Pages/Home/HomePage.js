@@ -1,50 +1,46 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  Pressable,
-  View,
-} from "react-native";
-
+import { ScrollView, StyleSheet, Pressable, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 import { useRoute } from "@react-navigation/native";
 import {
   DisplayText,
   SubHeaderText,
   BaseText,
   HeaderText,
-} from "../Components/Typography";
-import PrimaryButton from "../Constant/PrimaryButton";
-import Navbar from "../Components/Navbar";
+} from "../../Components/Typography";
+import PrimaryButton from "../../Constant/PrimaryButton";
+import Navbar from "../../Components/Navbar";
+import Card from "../../Components/Card";
+import LessonModal from "../../Flows/Lesson/LessonModal";
 
 export default function HomeScreen() {
   const { user } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
   const [currentTab, setCurrentTab] = useState("Home");
+  const [lessonVisible, setLessonVisible] = useState(false);
 
   function openScreen(screenName) {
-    if (screenName === "Home") {
-      setCurrentTab("Home");
-      return;
-    }
-
     setCurrentTab(screenName);
 
-    if (screenName === "Saved") {
-      navigation.navigate("SavedPage");
-      return;
+    switch (screenName) {
+      case "Saved":
+        navigation.navigate("SavedPage");
+        break;
+
+      case "Profile":
+        navigation.navigate("ProfilePage");
+        break;
+
+      default:
+        break;
     }
-
-    navigation.navigate("ProfilePage");
   }
-
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={["top"]} style={styles.container}>
       <ScrollView contentContainerStyle={{ paddingBottom: 130 }}>
         <View style={{ paddingHorizontal: 20, gap: 32 }}>
           <View style={styles.header}>
@@ -52,16 +48,15 @@ export default function HomeScreen() {
               Welcome back {user?.displayName ?? "Learner"}
             </DisplayText>
 
-            <View style={styles.streak}>
+            <Card style={styles.streak}>
               <BaseText>24</BaseText>
               <FontAwesome6 name="fire-flame-simple" size={20} color="black" />
-            </View>
+            </Card>
           </View>
 
           <View style={styles.progress}>
             <View style={styles.progressHeader}>
               <BaseText>Your progress</BaseText>
-              <FontAwesome6 name="arrow-right" size={20} color="#111" />
             </View>
 
             <View style={styles.row}>
@@ -70,26 +65,20 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <Pressable
-            activeOpacity={0.8}
-            style={styles.wordCard}
-            onPress={() => navigation.navigate("LearnWord", { wordIndex: 0 })}
-          >
+          <Card style={styles.wordCard}>
             <BaseText>Word of the day</BaseText>
 
             <View style={styles.wordCardLable}>
               <HeaderText>Meticulous</HeaderText>
               <BaseText>Tap to learn the meaning</BaseText>
             </View>
-          </Pressable>
+          </Card>
 
-          <Pressable
-            activeOpacity={0.8}
+          <Card
             style={[styles.wordCard, { backgroundColor: "hsl(221, 47%, 48%)" }]}
-            onPress={() => navigation.navigate("LearnWord", { wordIndex: 0 })}
+            onPress={() => setLessonVisible(true)}
           >
             <BaseText style={{ color: "white" }}>Today's lesson</BaseText>
-
             <View style={styles.lessonCheck}>
               <FontAwesome6 name="circle-check" size={34} color="#C7FF58" />
             </View>
@@ -100,9 +89,9 @@ export default function HomeScreen() {
               </HeaderText>
               <BaseText style={{ color: "white" }}>5 words</BaseText>
             </View>
-          </Pressable>
+          </Card>
 
-          <View style={styles.reviewCard}>
+          <Card style={styles.reviewCard}>
             <View style={styles.reviewHeader}>
               <View style={{ gap: 8 }}>
                 <SubHeaderText>Continue Review</SubHeaderText>
@@ -114,30 +103,33 @@ export default function HomeScreen() {
 
             <PrimaryButton
               title="Complete the lesson"
-              onPress={() =>
-                navigation.navigate("Question", { questionIndex: 0 })
-              }
+              onPress={() => setLessonVisible(true)}
               backgroundColor="white"
               color="#111"
               style={styles.button}
             />
-          </View>
+          </Card>
         </View>
       </ScrollView>
+
+      <LessonModal
+        visible={lessonVisible}
+        onClose={() => setLessonVisible(false)}
+      />
     </SafeAreaView>
   );
 }
 
 function StatCard({ value, label }) {
   return (
-    <View style={styles.statCard}>
+    <Card style={styles.statCard}>
       <View style={styles.statRow}>
         <FontAwesome6 name="book-open" size={20} color="black" />
         <SubHeaderText>{value}</SubHeaderText>
       </View>
 
       <BaseText>{label}</BaseText>
-    </View>
+    </Card>
   );
 }
 
@@ -151,7 +143,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 48,
   },
 
   displayeText: {
@@ -169,7 +160,6 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    boxShadow: "4px 4px 0px hsl(0, 0%, 5%)",
   },
 
   progress: {
@@ -195,7 +185,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    boxShadow: "4px 4px 0px black",
     gap: 16,
   },
 

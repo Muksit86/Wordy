@@ -1,27 +1,16 @@
 import React from "react";
-import { StyleSheet, Pressable } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { FontAwesome6 } from "@expo/vector-icons";
 
-import { HeaderText } from "../Components/Typography";
-import { COLORS } from "./Colors";
+import { COLORS } from "../Constant/Colors";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function PrimaryButton({
-  title,
-  onPress,
-  icon = "arrow-right",
-  backgroundColor = COLORS.Triary,
-  color = COLORS.white,
-  style,
-  textStyle,
-  disabled = false,
-}) {
+export default function Card({ children, onPress, style, disabled = false }) {
   const offset = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -29,7 +18,6 @@ export default function PrimaryButton({
 
     return {
       transform: [{ translateX: offset.value }, { translateY: offset.value }],
-
       boxShadow: `${shadowOffset}px ${shadowOffset}px 0px ${COLORS.black}`,
     };
   });
@@ -48,46 +36,23 @@ export default function PrimaryButton({
           duration: 70,
         });
       }}
-      style={[
-        styles.button,
-        {
-          backgroundColor,
-        },
-        animatedStyle,
-        disabled && styles.disabled,
-        style,
-      ]}
+      style={[styles.card, animatedStyle, disabled && styles.disabled, style]}
     >
-      <HeaderText style={[styles.text, { color }, textStyle]}>
-        {title}
-      </HeaderText>
-
-      {icon && <FontAwesome6 name={icon} size={22} color={color} />}
+      {children}
     </AnimatedPressable>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    minHeight: 88,
-    borderRadius: 20,
+  card: {
+    backgroundColor: COLORS.white,
     borderWidth: 3,
     borderColor: COLORS.black,
-
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 18,
-    paddingHorizontal: 24,
-
+    borderRadius: 18,
     boxShadow: `4px 4px 0px ${COLORS.black}`,
   },
 
   disabled: {
     opacity: 0.55,
-  },
-
-  text: {
-    textAlign: "center",
   },
 });

@@ -1,9 +1,12 @@
 import { useAuth } from "../Context/AuthContext";
 import { useApp } from "../Context/AppContext";
+
 import LoadingScreen from "../Components/LoadingScreen";
-import OnboardingStack from "./OnboardingStack";
+
 import AuthStack from "./AuthStack";
 import MainTabs from "./MainTabs";
+
+import OnboardingFlow from "../Flows/Onboarding/OnboardingFlow";
 
 export default function RootNavigator() {
   const { user, loading } = useAuth();
@@ -14,7 +17,7 @@ export default function RootNavigator() {
   }
 
   if (!hasSeenOnboarding) {
-    return <OnboardingStack />;
+    return <OnboardingFlow />;
   }
 
   if (!user) {

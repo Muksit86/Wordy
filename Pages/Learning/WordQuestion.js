@@ -1,47 +1,18 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  View,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { DisplayText, HeaderText, BaseText } from "../../Components/Typography";
+import {
+  DisplayText,
+  HeaderText,
+  BaseText,
+  SubHeaderText,
+} from "../../Components/Typography";
 import PrimaryButton from "../../Constant/PrimaryButton";
 import { COLORS } from "../../Constant/Colors";
-
-const questions = [
-  {
-    prompt: "What does 'Reluctant' mean?",
-    options: [
-      "Unwilling or hesitant",
-      "Very excited",
-      "Extremely confident",
-      "Easy to understand",
-    ],
-  },
-  {
-    prompt: "What does 'Meticulous' mean?",
-    options: [
-      "Very careful and precise",
-      "Fast and careless",
-      "Loud and angry",
-      "Simple and plain",
-    ],
-  },
-  {
-    prompt: "What does 'Eloquent' mean?",
-    options: [
-      "Clear and expressive",
-      "Quiet and unsure",
-      "Hard to remember",
-      "Slow to react",
-    ],
-  },
-];
+import LessonHeader from "../../Components/LessonHeader";
 
 const optionLabels = ["A", "B", "C", "D"];
 
@@ -69,21 +40,15 @@ export default function QuestionScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <FontAwesome6 name="angle-left" size={32} color={COLORS.black} />
-          </Pressable>
+        <LessonHeader
+          current={questionIndex + 1}
+          total={questions.length}
+          progress={progress}
+        />
 
-          <BaseText style={styles.questionCount}>
-            {questionIndex + 1}/{questions.length} question
-          </BaseText>
-        </View>
-
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: progress }]} />
-        </View>
-
-        <DisplayText>{currentQuestion.prompt}</DisplayText>
+        <HeaderText style={{ marginTop: 16 }}>
+          {currentQuestion.prompt}
+        </HeaderText>
 
         <View style={styles.answers}>
           {currentQuestion.options.map((option, index) => {
@@ -112,7 +77,7 @@ export default function QuestionScreen() {
                   </HeaderText>
                 </View>
 
-                <HeaderText style={styles.answerText}>{option}</HeaderText>
+                <BaseText style={styles.answerText}>{option}</BaseText>
               </Pressable>
             );
           })}
@@ -137,41 +102,14 @@ const styles = StyleSheet.create({
 
   content: {
     paddingHorizontal: 28,
-    paddingTop: 48,
     paddingBottom: 60,
     flexGrow: 1,
-  },
-
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 18,
-  },
-
-  questionCount: {
-    color: "#7A7A7A",
-  },
-
-  progressBar: {
-    height: 28,
-    borderRadius: 999,
-    borderWidth: 3,
-    borderColor: COLORS.black,
-    backgroundColor: COLORS.white,
-    overflow: "hidden",
-    marginBottom: 48,
-  },
-
-  progressFill: {
-    height: "100%",
-    backgroundColor: COLORS.black,
-    borderRadius: 999,
   },
 
   answers: {
     marginTop: 48,
     gap: 24,
+    fontWeight: "700",
   },
 
   answerCard: {

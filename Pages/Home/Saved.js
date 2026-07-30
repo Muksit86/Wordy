@@ -1,5 +1,5 @@
 import React from "react";
-import SavePage from "../Components/Bottom Sheets/SavePage";
+import SavePage from "../Pages/SavePage";
 
 export default function SavedScreen() {
   return <SavePage />;

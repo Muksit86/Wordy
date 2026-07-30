@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -68,7 +63,7 @@ export default function OnboardingScreen() {
 
         <View style={styles.list}>
           {step.options.map((item) => (
-            <TouchableOpacity
+            <Pressable
               key={item}
               style={styles.card}
               activeOpacity={0.8}
@@ -77,7 +72,7 @@ export default function OnboardingScreen() {
               <HeaderText>{item}</HeaderText>
 
               <FontAwesome6 name="arrow-right" size={24} color={COLORS.black} />
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
 

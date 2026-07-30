@@ -1,5 +1,5 @@
 import React from "react";
-import ProfilePage from "../Components/Bottom Sheets/ProfilePage";
+import ProfilePage from "../Pages/ProfilePage";
 
 export default function ProfileScreen() {
   return <ProfilePage />;

@@ -31,8 +31,17 @@ export function AppProvider({ children }) {
     }
   };
 
-  const finishOnboarding = async () => {
+  const finishOnboarding = async ({ language, category, level, goal }) => {
     await setHasSeenOnboarding();
+
+    await setNativeLanguage(language);
+
+    // Later:
+    // await saveCategory(category);
+    // await saveLevel(level);
+    // await saveGoal(goal);
+
+    setLanguage(language);
     setHasSeen(true);
   };
 

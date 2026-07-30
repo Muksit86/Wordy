@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  View,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, StyleSheet, Pressable, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -58,8 +53,6 @@ export default function LoginScreen() {
       );
 
       alert("Welcome back!");
-
-      // navigation.replace("Home");
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-credential":

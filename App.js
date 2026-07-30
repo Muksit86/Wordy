@@ -10,12 +10,6 @@ import { BricolageGrotesque_700Bold } from "@expo-google-fonts/bricolage-grotesq
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import HomePage from "./Pages/HomePage";
-import Onboaring from "./Pages/Onboading/Onboaring";
-import LearnWord from "./Pages/Learning/LearnWord";
-import WordQuestion from "./Pages/Learning/WordQuestion";
-import SavePage from "./Components/Bottom Sheets/SavePage";
-import ProfilePage from "./Components/Bottom Sheets/ProfilePage";
 import { AppProvider } from "./Context/AppContext";
 import { AuthProvider } from "./Context/AuthContext";
 import RootNavigator from "./Navigation/RootNavigator";
